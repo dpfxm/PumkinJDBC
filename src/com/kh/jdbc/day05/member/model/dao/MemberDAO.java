@@ -1,14 +1,32 @@
 package com.kh.jdbc.day05.member.model.dao;
 
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 
 import com.kh.jdbc.day05.member.model.vo.Member;
 
 public class MemberDAO {
-
+	private Properties prop;
+	
+	public MemberDAO() {
+		prop = new Properties();
+		Reader reader = null;
+		try {
+			reader = new FileReader("resources/query.properties");
+			prop.load(reader);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public int insertMember(Connection conn, Member member) {
-		String query = "INSERT INTO MEMBER_TBL VALUES(?,?,?,?,?,?,?,?,?,SYSDATE)";
+//		String query = "INSERT INTO MEMBER_TBL VALUES(?,?,?,?,?,?,?,?,?,SYSDATE)";
+		String query = prop.getProperty("insertMember");
 //		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int result = -1;
@@ -39,7 +57,8 @@ public class MemberDAO {
 	}
 
 	public int updateMember(Connection conn, Member member) {
-		String query = "UPDATE MEMBER_TBL SET MEMBER_PWD = ?, EMAIL = ?, PHONE = ?, ADDRESS = ?, HOBBY = ? WHERE MEMBER_ID = ?";
+//		String query = "UPDATE MEMBER_TBL SET MEMBER_PWD = ?, EMAIL = ?, PHONE = ?, ADDRESS = ?, HOBBY = ? WHERE MEMBER_ID = ?";
+		String query = prop.getProperty("updateMember");
 //		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int result = -1;
@@ -67,7 +86,8 @@ public class MemberDAO {
 	}
 
 	public int deleteMember(Connection conn, String memberId) {
-		String query = "DELETE FROM MEMBER_TBL WHERE MEMBER_ID = ?";
+//		String query = "DELETE FROM MEMBER_TBL WHERE MEMBER_ID = ?";
+		String query = prop.getProperty("deleteMember");
 //		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int result = -1;
@@ -90,7 +110,8 @@ public class MemberDAO {
 	}
 
 	public List<Member> selectAllMembers(Connection conn) {
-		String query = "SELECT * FROM MEMBER_TBL";
+//		String query = "SELECT * FROM MEMBER_TBL";
+		String query = prop.getProperty("selectAllMembers");
 //		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rset = null;
